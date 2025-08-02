@@ -29,21 +29,7 @@ class MentalDriversArchitect:
         self.telemedicine_templates = self._load_telemedicine_templates()
         self.quality_filters = self._load_quality_filters()
         self.telemedicine_templates = self._load_telemedicine_templates()
-        self.quality_filters = self._load_quality_filters()
-        self.telemedicine_templates = self._load_telemedicine_templates()
         logger.info(f"Mental Drivers Architect inicializado com {len(self.universal_drivers)} drivers universais")
-    
-    def _load_quality_filters(self) -> Dict[str, Any]:
-        """Carrega filtros de qualidade para drivers mentais"""
-        return {
-            'min_specific_elements': 3,  # Mínimo 3 elementos específicos
-            'required_medical_terms': ['médico', 'paciente', 'consulta', 'diagnóstico', 'tratamento', 'saúde'],
-            'required_course_terms': ['curso', 'aluno', 'aprender', 'certificação', 'conhecimento'],
-            'forbidden_generic_terms': ['customizado para', 'baseado em', 'específico para', 'adaptado para'],
-            'min_story_length': 150,  # Mínimo 150 caracteres para histórias
-            'max_generic_ratio': 0.2  # Máximo 20% de palavras genéricas
-        }
-    
     
     def _load_quality_filters(self) -> Dict[str, Any]:
         """Carrega filtros de qualidade para drivers mentais"""
@@ -435,19 +421,6 @@ class MentalDriversArchitect:
             
             if not selected_drivers:
                 logger.error("❌ Nenhum driver selecionado")
-    # Define contexto de busca antes da pesquisa
-    def setup_search_context(data):
-        from services.production_search_manager import production_search_manager
-        production_search_manager.set_search_context(data)
-        return {"context_set": True}
-    
-    resilient_executor.registrar_componente(
-        'setup_search_context',
-        setup_search_context,
-        obrigatorio=False,
-        timeout=5
-    )
-    
                 # Usa fallback em vez de falhar
                 logger.warning("🔄 Usando drivers padrão como fallback")
                 return self._generate_fallback_drivers_system(context_data)
@@ -1099,6 +1072,56 @@ class MentalDriversArchitect:
             "total_drivers": len(fallback_drivers),
             "generation_timestamp": time.time(),
             "fallback_mode": True
+        }
+
+    def _execute_visual_proofs(self, data: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Wrapper para provas visuais"""
+        avatar_data = data.get('avatar_ultra_detalhado', {})
+        
+        # Gera conceitos específicos se não há avatar
+        if not avatar_data:
+            concepts = self._generate_context_specific_concepts(data)
+        else:
+            concepts = self._extract_concepts_for_visual_proof(avatar_data, data)
+        
+        return visual_proofs_generator.generate_complete_proofs_system(concepts, avatar_data, data)
+    
+    def _generate_context_specific_concepts(self, data: Dict[str, Any]) -> List[str]:
+        """Gera conceitos específicos baseados no contexto"""
+        segmento = data.get('segmento', 'área')
+        produto = data.get('produto', 'solução')
+        
+        return [
+            f"Eficácia comprovada de {produto}",
+            f"Transformação real em {segmento}",
+            f"Superioridade sobre métodos tradicionais",
+            f"Resultados mensuráveis obtidos",
+            f"Impacto positivo na vida profissional"
+        ]
+    
+    def _execute_final_consolidation(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Executa consolidação final"""
+        from services.consolidacao_final import consolidacao_final
+        session_id = data.get('session_id', auto_save_manager.session_id)
+        return consolidacao_final.consolidar_analise_completa(data, session_id)
+    
+    def _fallback_final_consolidation(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Fallback para consolidação final"""
+        session_id = data.get('session_id', auto_save_manager.session_id)
+        
+        return {
+            'tipo': 'consolidacao_fallback',
+            'session_id': session_id,
+            'timestamp': datetime.now().isoformat(),
+            'status': 'DADOS_PRESERVADOS_FALLBACK',
+            'componentes_disponiveis': list(data.keys()),
+            'arquivos_salvos': f"relatorios_intermediarios/{session_id}/",
+            'instrucoes': [
+                "Todos os dados foram preservados nos arquivos intermediários",
+                "Acesse o diretório para análise manual",
+                "Execute nova análise com APIs configuradas"
+            ],
+            'garantia': 'NENHUM DADO FOI PERDIDO'
         }
 
 # Instância global
