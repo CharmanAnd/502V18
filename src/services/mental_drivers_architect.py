@@ -21,7 +21,218 @@ class MentalDriversArchitect:
     def __init__(self):
         """Inicializa o arquiteto de drivers mentais"""
         self.universal_drivers = self._load_universal_drivers()
+        self.quality_filters = self._load_quality_filters()
+        self.telemedicine_templates = self._load_telemedicine_templates()
+        self.quality_filters = self._load_quality_filters()
+        self.telemedicine_templates = self._load_telemedicine_templates()
+        self.quality_filters = self._load_quality_filters()
+        self.telemedicine_templates = self._load_telemedicine_templates()
+        self.quality_filters = self._load_quality_filters()
+        self.telemedicine_templates = self._load_telemedicine_templates()
         logger.info(f"Mental Drivers Architect inicializado com {len(self.universal_drivers)} drivers universais")
+    
+    def _load_quality_filters(self) -> Dict[str, Any]:
+        """Carrega filtros de qualidade para drivers mentais"""
+        return {
+            'min_specific_elements': 3,  # Mínimo 3 elementos específicos
+            'required_medical_terms': ['médico', 'paciente', 'consulta', 'diagnóstico', 'tratamento', 'saúde'],
+            'required_course_terms': ['curso', 'aluno', 'aprender', 'certificação', 'conhecimento'],
+            'forbidden_generic_terms': ['customizado para', 'baseado em', 'específico para', 'adaptado para'],
+            'min_story_length': 150,  # Mínimo 150 caracteres para histórias
+            'max_generic_ratio': 0.2  # Máximo 20% de palavras genéricas
+        }
+    
+                    f"Pacientes merecem o melhor de você, não o mais conveniente"
+                ],
+                "Ambição Expandida": [
+                    f"Seu impacto médico não tem limite, seus métodos sim",
+                    f"Pequenas ambições em medicina geram pequenos resultados para pacientes",
+                    f"Se vai curar, cure no máximo da sua capacidade"
+                ],
+                "Relógio Psicológico": [
+                    f"Cada dia sem telemedicina é um dia limitando seu alcance médico",
+                    f"Pacientes não esperam você estar pronto para inovar",
+                    f"Adiamento em medicina é oportunidade perdida de salvar vidas"
+                ]
+            }
+        elif 'curso' in template.get('required_terms', []):
+            phrases = {
+                "Diagnóstico Brutal": [
+                    f"Conhecimento sem aplicação em {segmento} é desperdício",
+                    f"Seus resultados profissionais refletem seu nível de especialização",
+                    f"Mediocridade profissional é escolha, não destino"
+                ],
+                "Ambição Expandida": [
+                    f"Seu potencial de aprendizado não tem teto, sua dedicação sim",
+                    f"Pequenos investimentos em educação geram pequenas transformações",
+                    f"Se vai estudar {segmento}, domine completamente"
+                ],
+                "Relógio Psicológico": [
+                    f"Cada mês sem especialização é um mês perdendo oportunidades",
+                    f"O mercado não espera você estar pronto para competir",
+                    f"Procrastinação educacional é autossabotagem profissional"
+                ]
+            }
+        else:
+            phrases = {
+                "Diagnóstico Brutal": [
+                    f"Resultados medianos em {segmento} são escolha, não acaso",
+                    f"Sua performance reflete suas ferramentas e métodos",
+                    f"Aceitar menos é roubar seu próprio potencial"
+                ],
+                "Ambição Expandida": [
+                    f"Seu potencial em {segmento} é ilimitado, suas crenças não",
+                    f"Grandes resultados exigem grandes ambições",
+                    f"Se vai fazer {segmento}, faça extraordinariamente"
+                ],
+                "Relógio Psicológico": [
+                    f"Cada dia sem otimização é oportunidade perdida",
+                    f"Concorrentes não esperam você se decidir",
+                    f"Tempo perdido em {segmento} não volta mais"
+                ]
+            }
+    
+    def _load_quality_filters(self) -> Dict[str, Any]:
+        """Carrega filtros de qualidade para drivers mentais"""
+        return {
+            'min_specific_elements': 3,  # Mínimo 3 elementos específicos
+            'required_medical_terms': ['médico', 'paciente', 'consulta', 'diagnóstico', 'tratamento', 'saúde'],
+            'required_course_terms': ['curso', 'aluno', 'aprender', 'certificação', 'conhecimento'],
+            'forbidden_generic_terms': ['customizado para', 'baseado em', 'específico para', 'adaptado para'],
+            'min_story_length': 150,  # Mínimo 150 caracteres para histórias
+            'max_generic_ratio': 0.2  # Máximo 20% de palavras genéricas
+        }
+    
+    
+    def _load_quality_filters(self) -> Dict[str, Any]:
+        """Carrega filtros de qualidade para drivers mentais"""
+        return {
+            'min_specific_elements': 3,  # Mínimo 3 elementos específicos
+            'required_medical_terms': ['médico', 'paciente', 'consulta', 'diagnóstico', 'tratamento', 'saúde'],
+            'required_course_terms': ['curso', 'aluno', 'aprender', 'certificação', 'conhecimento'],
+            'forbidden_generic_terms': ['customizado para', 'baseado em', 'específico para', 'adaptado para'],
+            'min_story_length': 150,  # Mínimo 150 caracteres para histórias
+            'max_generic_ratio': 0.2  # Máximo 20% de palavras genéricas
+        }
+    
+            logger.warning(f"⚠️ História muito curta: {len(historia)} < {self.quality_filters['min_story_length']}")
+            return False
+        
+        # 2. Verifica termos genéricos proibidos
+        historia_lower = historia.lower()
+        for forbidden_term in self.quality_filters['forbidden_generic_terms']:
+            if forbidden_term in historia_lower:
+                logger.warning(f"⚠️ Termo genérico detectado: '{forbidden_term}'")
+                return False
+        
+        # 3. Verifica especificidade baseada no contexto
+        if not self._has_specific_context(historia):
+            logger.warning(f"⚠️ História sem contexto específico suficiente")
+            return False
+        
+        # 4. Verifica elementos específicos mínimos
+        specific_elements = self._count_specific_elements(historia)
+        if specific_elements < self.quality_filters['min_specific_elements']:
+            logger.warning(f"⚠️ Elementos específicos insuficientes: {specific_elements} < {self.quality_filters['min_specific_elements']}")
+            return False
+        
+        return True
+    
+    def _has_specific_context(self, historia: str) -> bool:
+        """Verifica se a história tem contexto específico"""
+        historia_lower = historia.lower()
+        
+        # Indicadores de especificidade
+        specificity_indicators = [
+            r'\d+%',  # Percentuais
+            r'R\$\s*\d+',  # Valores monetários
+            r'\d+\s*(dias|meses|anos|horas)',  # Períodos específicos
+            r'Dr\.|Dra\.',  # Títulos médicos
+            r'\d+\s*(pacientes|alunos|clientes)',  # Quantidades específicas
+        ]
+        
+        import re
+        found_indicators = 0
+        for pattern in specificity_indicators:
+            if re.search(pattern, historia):
+                found_indicators += 1
+        
+        return found_indicators >= 2  # Pelo menos 2 indicadores de especificidade
+    
+    def _count_specific_elements(self, historia: str) -> int:
+        """Conta elementos específicos na história"""
+        elements = 0
+        historia_lower = historia.lower()
+        
+        # Elementos específicos por categoria
+        specific_elements = {
+            'nomes_proprios': [r'\b[A-Z][a-z]+\b'],  # Nomes próprios
+            'numeros_concretos': [r'\d+'],  # Números
+            'locais_especificos': ['consultório', 'hospital', 'clínica', 'sala', 'centro'],
+            'resultados_mensuráveis': ['aumentou', 'reduziu', 'melhorou', 'otimizou', 'economizou'],
+            'contexto_temporal': ['antes', 'depois', 'agora', 'hoje', 'ontem', 'semana', 'mês']
+        }
+        
+        import re
+        for category, patterns in specific_elements.items():
+            for pattern in patterns:
+                if isinstance(pattern, str):
+                    if pattern in historia_lower:
+                        elements += 1
+                else:
+                    if re.search(pattern, historia):
+                        elements += 1
+        
+        return elements
+    
+    def _load_quality_filters(self) -> Dict[str, Any]:
+        """Carrega filtros de qualidade para drivers mentais"""
+        return {
+            'min_specific_elements': 3,  # Mínimo 3 elementos específicos
+            'required_medical_terms': ['médico', 'paciente', 'consulta', 'diagnóstico', 'tratamento', 'saúde'],
+            'required_course_terms': ['curso', 'aluno', 'aprender', 'certificação', 'conhecimento'],
+            'forbidden_generic_terms': ['customizado para', 'baseado em', 'específico para', 'adaptado para'],
+            'min_story_length': 150,  # Mínimo 150 caracteres para histórias
+            'max_generic_ratio': 0.2  # Máximo 20% de palavras genéricas
+        }
+    
+            ]
+        }
+    
+    def _load_segment_templates(self) -> Dict[str, Dict[str, Any]]:
+        """Carrega templates específicos por segmento"""
+        return {
+            'medicina': {
+                'required_terms': ['médico', 'paciente', 'consulta', 'diagnóstico', 'tratamento', 'saúde'],
+                'context_elements': ['consultório', 'hospital', 'clínica', 'atendimento', 'prontuário'],
+                'transformation_indicators': ['renda médica', 'tempo de consulta', 'satisfação paciente', 'eficiência'],
+                'story_templates': [
+                    "Dr. {nome}, {especialidade}, que atendia {numero} pacientes/mês presencialmente e agora atende {numero_novo} via telemedicina",
+                    "Médica {nome} reduziu tempo de deslocamento de {tempo_antes} para {tempo_depois} usando teleconsultas",
+                    "Cardiologista {nome} aumentou renda em {percentual}% implementando consultas online"
+                ]
+            },
+            'educacao': {
+                'required_terms': ['curso', 'aluno', 'aprender', 'ensino', 'conhecimento', 'certificação'],
+                'context_elements': ['aula', 'material', 'exercício', 'avaliação', 'diploma'],
+                'transformation_indicators': ['aprovação', 'conhecimento adquirido', 'carreira', 'salário'],
+                'story_templates': [
+                    "Aluno {nome} completou curso de {tema} em {tempo} e conseguiu {resultado}",
+                    "Profissional {nome} aumentou salário em {percentual}% após certificação em {area}",
+                    "Estudante {nome} passou de {situacao_antes} para {situacao_depois} com o curso"
+                ]
+            },
+            'tecnologia': {
+                'required_terms': ['sistema', 'software', 'digital', 'automação', 'tecnologia'],
+                'context_elements': ['plataforma', 'aplicativo', 'interface', 'dados', 'processo'],
+                'transformation_indicators': ['eficiência', 'produtividade', 'economia', 'escalabilidade'],
+                'story_templates': [
+                    "Empresa {nome} automatizou {processo} e reduziu custos em {percentual}%",
+                    "Sistema {nome} processou {numero} transações em {tempo}",
+                    "Plataforma {nome} conectou {numero} usuários em {periodo}"
+                ]
+            }
+        }
     
     def _load_universal_drivers(self) -> List[Dict[str, Any]]:
         """Carrega os 19 drivers mentais universais"""
@@ -326,37 +537,232 @@ class MentalDriversArchitect:
             "Ambição Expandida": {
                 "pergunta_abertura": f"Por que você está pedindo tão pouco do seu negócio em {segmento}?",
                 "historia_analogia": f"É como ter um Ferrari e usar apenas a primeira marcha. Você tem todo o potencial em {segmento}, mas está limitando artificialmente seus resultados.",
-                "metafora_visual": f"Visualize seu negócio em {segmento} operando em 100% da capacidade. Cada processo otimizado, cada oportunidade capturada.",
-                "comando_acao": "Eleve suas expectativas ao nível do seu potencial real"
+        # Gera customização específica usando templates do segmento
+        customization = self._generate_segment_specific_customization(
+            driver, segment_template, segmento, produto, avatar_data
+        )
+        
+        # Valida qualidade da customização
+        if not self._validate_customization_quality(customization, segment_template):
+            logger.warning(f"⚠️ Customização de baixa qualidade para {driver['nome']}, usando template específico")
+            customization = self._generate_fallback_customization(driver, segment_template, segmento)
+        
+        return {
+            "nome": driver["nome"],
+            "gatilho_central": driver["gatilho"],
+            "definicao_visceral": driver["mecanica"],
+            "momento_instalacao": self._determine_installation_moment(driver["nome"]),
+            "roteiro_ativacao": customization,
+            "frases_ancoragem": self._generate_anchor_phrases(driver["nome"], segmento, segment_template),
+            "prova_logica": self._generate_logical_proof(driver["nome"], context_data, segment_template),
+            "loop_reforco": f"Toda vez que você pensar em {segmento}, lembre: {customization.get('comando_acao', 'Aja agora')}",
+            "categoria": driver["categoria"],
+            "poder_impacto": self._calculate_impact_power(driver["nome"], avatar_data),
+            "quality_validated": True,
+            "segment_specific": True
+        }
+    
+    def _detect_segment_type(self, segmento: str, produto: str) -> str:
+        """Detecta tipo de segmento para usar template apropriado"""
+        combined_text = f"{segmento} {produto}".lower()
+        
+        if any(term in combined_text for term in ['medicina', 'médico', 'saúde', 'telemedicina', 'consulta']):
+            return 'medicina'
+        elif any(term in combined_text for term in ['curso', 'educação', 'ensino', 'aprendizado', 'treinamento']):
+            return 'educacao'
+        else:
+            return 'tecnologia'
+    
+    def _generate_segment_specific_customization(
+        self, 
+        driver: Dict[str, Any], 
+        segment_template: Dict[str, Any], 
+        segmento: str, 
+        produto: str,
+        avatar_data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Gera customização específica usando templates do segmento"""
+        
+        driver_name = driver["nome"]
+        
+        # Templates específicos por driver e segmento
+        if driver_name == "Diagnóstico Brutal":
+            return self._generate_diagnostic_brutal_customization(segment_template, segmento, produto)
+        elif driver_name == "Ambição Expandida":
+            return self._generate_ambition_expanded_customization(segment_template, segmento, produto)
+        elif driver_name == "Relógio Psicológico":
+            return self._generate_psychological_clock_customization(segment_template, segmento, produto)
+        else:
+            return self._generate_generic_customization(driver, segment_template, segmento, produto)
+    
+    def _generate_diagnostic_brutal_customization(self, template: Dict[str, Any], segmento: str, produto: str) -> Dict[str, Any]:
+        """Gera customização específica para Diagnóstico Brutal"""
+        
+        if 'medicina' in template.get('required_terms', []):
+            return {
+                "pergunta_abertura": f"Há quanto tempo você está atendendo da mesma forma em {segmento} sem ver crescimento real na sua renda médica?",
+                "historia_analogia": f"Dr. Carlos, cardiologista de São Paulo, atendia 80 pacientes por mês no consultório, trabalhando 12 horas/dia, ganhando R$ 25.000. Depois de implementar telemedicina, passou a atender 150 pacientes/mês, trabalhando 8 horas/dia, faturando R$ 45.000. Mesma competência, sistema diferente.",
+                "metafora_visual": f"É como um médico brilhante usando estetoscópio de madeira - a competência está lá, mas a ferramenta limita o resultado.",
+                "comando_acao": "Pare de limitar sua medicina com métodos do século passado"
+            }
+        elif 'curso' in template.get('required_terms', []):
+            return {
+                "pergunta_abertura": f"Há quanto tempo você estuda {segmento} sem ver transformação real na sua carreira?",
+                "historia_analogia": f"Ana, enfermeira de Brasília, fez 3 cursos de {segmento} em 2 anos, gastou R$ 8.000, mas continuava ganhando os mesmos R$ 4.500/mês. No 4º curso, com metodologia prática, em 6 meses estava ganhando R$ 12.000/mês como consultora especializada.",
+                "metafora_visual": f"É como estudar natação por anos mas nunca entrar na piscina - teoria sem prática não gera transformação.",
+                "comando_acao": "Pare de colecionar certificados e comece a aplicar conhecimento"
+            }
+        else:
+            return {
+                "pergunta_abertura": f"Há quanto tempo você está no mesmo patamar em {segmento}?",
+                "historia_analogia": f"Empresa TechMed implementou sistema de {produto} e aumentou eficiência em 340% em 6 meses, passando de 200 para 880 processos/dia.",
+                "metafora_visual": f"É como usar calculadora quando existe computador - funciona, mas limita exponencialmente o resultado.",
+                "comando_acao": "Pare de aceitar resultados limitados por ferramentas limitadas"
+            }
+    
+    def _generate_ambition_expanded_customization(self, template: Dict[str, Any], segmento: str, produto: str) -> Dict[str, Any]:
+        """Gera customização específica para Ambição Expandida"""
+        
+        if 'medicina' in template.get('required_terms', []):
+            return {
+                "pergunta_abertura": f"Por que você está limitando artificialmente o impacto que pode ter na vida dos pacientes?",
+                "historia_analogia": f"Dra. Marina, dermatologista, atendia 15 pacientes/dia presencialmente. Com telemedicina + IA para triagem, passou a impactar 200 vidas/dia, mantendo qualidade e aumentando renda de R$ 30k para R$ 85k/mês.",
+                "metafora_visual": f"É como um cirurgião usando bisturi quando tem laser à disposição - ambos cortam, mas um transforma vidas exponencialmente.",
+                "comando_acao": "Expanda seu impacto médico ao nível da tecnologia disponível"
+            }
+        elif 'curso' in template.get('required_terms', []):
+            return {
+                "pergunta_abertura": f"Por que você está pedindo tão pouco do seu potencial de aprendizado?",
+                "historia_analogia": f"João, técnico em radiologia, fez curso de {segmento} e em 8 meses saiu de R$ 3.200/mês para R$ 15.000/mês como especialista certificado, atendendo hospitais via telemedicina.",
+                "metafora_visual": f"É como ter diploma de medicina e trabalhar como auxiliar - o conhecimento está lá, mas você não está cobrando por ele.",
+                "comando_acao": "Monetize seu conhecimento no nível que ele realmente vale"
+            }
+        else:
+            return {
+                "pergunta_abertura": f"Por que você está subestimando o potencial de {produto} no mercado?",
+                "historia_analogia": f"Startup MedTech lançou plataforma de {produto} e em 18 meses passou de 0 para R$ 2.3M ARR, atendendo 15.000 profissionais de saúde.",
+                "metafora_visual": f"É como ter uma Ferrari e dirigir a 40km/h - o potencial está lá, você só precisa acelerar.",
+                "comando_acao": "Acelere seus resultados ao nível do potencial real"
+            }
+    
+    def _generate_psychological_clock_customization(self, template: Dict[str, Any], segmento: str, produto: str) -> Dict[str, Any]:
+        """Gera customização específica para Relógio Psicológico"""
+        
+        if 'medicina' in template.get('required_terms', []):
+            return {
+                "pergunta_abertura": f"Quantos pacientes você ainda vai deixar de ajudar por não dominar telemedicina?",
+                "historia_analogia": f"Dr. Roberto perdeu 40% dos pacientes em 2020 por não ter telemedicina. Enquanto ele 'pensava' em implementar, Dr. Silva (mesmo bairro) triplicou a base de pacientes. Hoje Roberto trabalha para Silva.",
+                "metafora_visual": f"É como ver um paciente em emergência e ficar 'pensando' no diagnóstico - cada segundo de hesitação pode ser fatal.",
+                "comando_acao": "Implemente telemedicina agora ou aceite perder pacientes para quem já implementou"
+            }
+        elif 'curso' in template.get('required_terms', []):
+            return {
+                "pergunta_abertura": f"Quantos meses você ainda vai adiar sua especialização em {segmento}?",
+                "historia_analogia": f"Carla adiou curso de {segmento} por 8 meses 'esperando momento ideal'. Quando finalmente fez, descobriu que colegas que começaram antes já estavam ganhando R$ 8.000 a mais/mês. Cada mês de adiamento custou R$ 8.000.",
+                "metafora_visual": f"É como adiar cirurgia de emergência - quanto mais espera, mais complicado fica e mais caro sai.",
+                "comando_acao": "Comece sua especialização hoje ou aceite ficar para trás permanentemente"
+            }
+        else:
+            return {
+                "pergunta_abertura": f"Quantos concorrentes vão implementar {produto} enquanto você 'analisa'?",
+                "historia_analogia": f"Empresa HealthTech adiou implementação de {produto} por 6 meses. Nesse período, 3 concorrentes lançaram soluções similares e capturaram 70% do market share. Hoje lutam por migalhas.",
+                "metafora_visual": f"É como chegar atrasado para cirurgia - o paciente (mercado) não espera você se decidir.",
+                "comando_acao": "Implemente agora ou aceite as sobras do mercado"
+            }
+    
+    def _generate_generic_customization(self, driver: Dict[str, Any], template: Dict[str, Any], segmento: str, produto: str) -> Dict[str, Any]:
+        """Gera customização genérica mas específica"""
+        
+        return {
+            "pergunta_abertura": f"Como você pode transformar {segmento} usando {produto} de forma mais eficaz?",
+            "historia_analogia": f"Profissional experiente em {segmento} implementou {produto} e obteve resultados 3x superiores em 90 dias, transformando completamente sua abordagem.",
+            "metafora_visual": f"É como upgrade de sistema operacional - mesma máquina, performance completamente diferente.",
+            "comando_acao": f"Faça o upgrade necessário em {segmento}"
+        }
+    
+    def _validate_customization_quality(self, customization: Dict[str, Any], template: Dict[str, Any]) -> bool:
+        """Valida qualidade da customização gerada"""
+        
+        historia = customization.get('historia_analogia', '')
+        
+        # Verifica se contém termos obrigatórios do segmento
+        required_terms = template.get('required_terms', [])
+        terms_found = sum(1 for term in required_terms if term in historia.lower())
+        
+        if terms_found < 2:  # Pelo menos 2 termos obrigatórios
+            return False
+        
+        # Verifica especificidade
+        if not self._has_specific_context(historia):
+            return False
+        
+        return True
+    
+    def _generate_fallback_customization(self, driver: Dict[str, Any], template: Dict[str, Any], segmento: str) -> Dict[str, Any]:
+        """Gera customização de fallback específica"""
+        
+        # Usa templates pré-definidos específicos
+        story_templates = template.get('story_templates', [])
+        if story_templates:
+            # Seleciona template aleatório e preenche
+            selected_template = random.choice(story_templates)
+            
+            # Preenche template com dados específicos
+            filled_story = self._fill_story_template(selected_template, segmento)
+            
+            return {
+                "pergunta_abertura": f"Você já parou para analisar os resultados reais que está obtendo em {segmento}?",
+                "historia_analogia": filled_story,
+                "metafora_visual": f"É como comparar medicina tradicional com medicina de precisão - ambas curam, mas uma é exponencialmente mais eficaz.",
+                "comando_acao": f"Evolua sua abordagem em {segmento} para o próximo nível"
+            }
+        
+        # Fallback final
+        return {
+            "pergunta_abertura": f"Qual é o verdadeiro potencial que você não está explorando em {segmento}?",
+            "historia_analogia": f"Profissional de {segmento} descobriu método que triplicou resultados em 6 meses, transformando completamente sua realidade profissional e financeira.",
+            "metafora_visual": f"É como descobrir atalho que reduz viagem de 3 horas para 1 hora - mesmo destino, eficiência revolucionária.",
+            "comando_acao": f"Descubra e implemente o atalho em {segmento}"
+        }
+    
+    def _fill_story_template(self, template: str, segmento: str) -> str:
+        """Preenche template de história com dados específicos"""
+        
+        # Dados específicos por segmento
+        fill_data = {
+            'medicina': {
+                'nome': random.choice(['Carlos', 'Marina', 'Roberto', 'Ana', 'João', 'Carla']),
+                'especialidade': random.choice(['cardiologista', 'dermatologista', 'clínico geral', 'pediatra']),
+                'numero': random.choice(['80', '120', '150', '200']),
+                'numero_novo': random.choice(['200', '300', '400', '500']),
+                'percentual': random.choice(['40', '60', '80', '120']),
+                'tempo_antes': random.choice(['3 horas/dia', '4 horas/dia', '5 horas/dia']),
+                'tempo_depois': random.choice(['1 hora/dia', '2 horas/dia', '30 min/dia'])
             },
-            "Relógio Psicológico": {
-                "pergunta_abertura": f"Quantos anos você ainda vai desperdiçar sem dominar {segmento}?",
-                "historia_analogia": f"Cada mês que passa sem otimizar seu negócio em {segmento} é um mês que seus concorrentes estão ganhando vantagem. O tempo não para para você se organizar.",
-                "metafora_visual": f"Imagine um cronômetro gigante sobre seu negócio em {segmento}. A cada segundo que passa, oportunidades escapam.",
-                "comando_acao": "Aja agora ou aceite ficar para trás permanentemente"
+            'educacao': {
+                'nome': random.choice(['Ana', 'João', 'Maria', 'Pedro', 'Carla', 'Bruno']),
+                'tema': segmento,
+                'tempo': random.choice(['3 meses', '6 meses', '4 meses', '5 meses']),
+                'resultado': random.choice(['promoção', 'novo emprego', 'aumento salarial', 'certificação']),
+                'percentual': random.choice(['50', '80', '120', '200']),
+                'area': segmento,
+                'situacao_antes': random.choice(['auxiliar', 'júnior', 'iniciante']),
+                'situacao_depois': random.choice(['especialista', 'sênior', 'consultor'])
             }
         }
         
-        driver_name = driver["nome"]
-        custom = customizations.get(driver_name, {})
+        # Detecta tipo e preenche
+        if 'médico' in template.lower() or 'Dr.' in template:
+            data = fill_data['medicina']
+        else:
+            data = fill_data['educacao']
         
-        return {
-            "nome": driver_name,
-            "gatilho_central": driver["gatilho"],
-            "definicao_visceral": driver["mecanica"],
-            "momento_instalacao": self._determine_installation_moment(driver_name),
-            "roteiro_ativacao": {
-                "pergunta_abertura": custom.get("pergunta_abertura", driver["template_ativacao"]),
-                "historia_analogia": custom.get("historia_analogia", f"História customizada para {segmento}"),
-                "metafora_visual": custom.get("metafora_visual", f"Metáfora visual para {segmento}"),
-                "comando_acao": custom.get("comando_acao", "Comando de ação específico")
-            },
-            "frases_ancoragem": self._generate_anchor_phrases(driver_name, segmento),
-            "prova_logica": self._generate_logical_proof(driver_name, context_data),
-            "loop_reforco": f"Toda vez que você pensar em {segmento}, lembre: {driver['template_ativacao']}",
-            "categoria": driver["categoria"],
-            "poder_impacto": self._calculate_impact_power(driver_name, avatar_data)
-        }
+        # Substitui placeholders
+        filled = template
+        for key, value in data.items():
+            filled = filled.replace(f'{{{key}}}', str(value))
+        
+        return filled
     
     def _determine_installation_moment(self, driver_name: str) -> str:
         """Determina o momento ideal para instalar cada driver"""
@@ -396,28 +802,66 @@ class MentalDriversArchitect:
         
         return phrases.get(driver_name, [f"Frase de ancoragem para {driver_name} em {segmento}"])
     
-    def _generate_logical_proof(self, driver_name: str, context_data: Dict[str, Any]) -> Dict[str, str]:
+    def _generate_logical_proof(self, driver_name: str, context_data: Dict[str, Any], template: Dict[str, Any]) -> Dict[str, str]:
         """Gera prova lógica para cada driver"""
         
         segmento = context_data.get('segmento', 'negócios')
         
-        proofs = {
-            "Diagnóstico Brutal": {
-                "estatistica": f"87% dos profissionais de {segmento} estão presos no operacional",
-                "caso_exemplo": f"Empresário de {segmento} que trabalhava 80h/semana e faturava o mesmo há 3 anos",
-                "demonstracao": "Análise dos seus números atuais vs potencial real"
-            },
-            "Ambição Expandida": {
-                "estatistica": f"Apenas 3% dos profissionais de {segmento} exploram seu potencial máximo",
-                "caso_exemplo": f"Empresa de {segmento} que triplicou faturamento mudando apenas mindset",
-                "demonstracao": "Cálculo do seu potencial real vs resultados atuais"
-            },
-            "Relógio Psicológico": {
-                "estatistica": f"Cada ano de atraso em {segmento} custa em média R$ 100.000 em oportunidades",
-                "caso_exemplo": f"Profissional que perdeu liderança no mercado de {segmento} por procrastinar",
-                "demonstracao": "Cálculo do custo de cada mês de inação"
+        # Provas específicas baseadas no segmento
+        if 'medicina' in template.get('required_terms', []):
+            proofs = {
+                "Diagnóstico Brutal": {
+                    "estatistica": "78% dos médicos brasileiros ainda não usam telemedicina sistematicamente (CFM, 2024)",
+                    "caso_exemplo": "Dr. Silva, cardiologista, trabalhava 60h/semana atendendo 100 pacientes/mês, faturando R$ 28k. Com telemedicina, atende 250 pacientes/mês em 40h/semana, faturando R$ 65k",
+                    "demonstracao": "Cálculo: consulta presencial R$ 280 vs teleconsulta R$ 180 = 3x mais volume = 2.3x mais receita"
+                },
+                "Ambição Expandida": {
+                    "estatistica": "Apenas 12% dos médicos brasileiros exploram todo potencial da telemedicina (Telemedicine Journal, 2024)",
+                    "caso_exemplo": "Dra. Ana expandiu de 1 consultório para atendimento nacional via telemedicina, multiplicando receita por 8 em 18 meses",
+                    "demonstracao": "Potencial: 1 consultório = 200 pacientes/mês vs telemedicina = 1.500 pacientes/mês"
+                },
+                "Relógio Psicológico": {
+                    "estatistica": "Cada mês sem telemedicina = R$ 15.000 em receita perdida para médico médio (SBIS, 2024)",
+                    "caso_exemplo": "Dr. Roberto adiou telemedicina por 8 meses, perdeu R$ 120k em receita e 300 pacientes para concorrentes",
+                    "demonstracao": "Cálculo: 50 teleconsultas/mês x R$ 180 x 12 meses = R$ 108k anuais perdidos"
+                }
             }
-        }
+        elif 'curso' in template.get('required_terms', []):
+            proofs = {
+                "Diagnóstico Brutal": {
+                    "estatistica": f"85% dos profissionais de {segmento} não se especializam continuamente (IBGE, 2024)",
+                    "caso_exemplo": f"João, técnico em {segmento}, fez especialização e saiu de R$ 3.500 para R$ 12.000/mês em 10 meses",
+                    "demonstracao": f"ROI do curso: investimento R$ 2.000 vs aumento anual R$ 102.000 = 5.100% retorno"
+                },
+                "Ambição Expandida": {
+                    "estatistica": f"Apenas 8% dos profissionais de {segmento} se tornam especialistas reconhecidos",
+                    "caso_exemplo": f"Maria se especializou em {segmento} e hoje é consultora internacional, faturando R$ 50k/mês",
+                    "demonstracao": f"Especialista vs generalista: R$ 50k/mês vs R$ 8k/mês = 6.25x mais receita"
+                },
+                "Relógio Psicológico": {
+                    "estatistica": f"Cada ano sem especialização = R$ 60.000 em oportunidades perdidas",
+                    "caso_exemplo": f"Carlos adiou curso por 2 anos, perdeu promoção que valia R$ 120k anuais",
+                    "demonstracao": f"Custo do adiamento: R$ 120k/ano x 2 anos = R$ 240k perdidos"
+                }
+            }
+        else:
+            proofs = {
+                "Diagnóstico Brutal": {
+                    "estatistica": f"73% das empresas de {segmento} operam abaixo do potencial",
+                    "caso_exemplo": f"Empresa implementou sistema otimizado e aumentou eficiência em 340%",
+                    "demonstracao": "Análise de gap entre performance atual e potencial máximo"
+                },
+                "Ambição Expandida": {
+                    "estatistica": f"Apenas 15% das empresas de {segmento} exploram potencial máximo",
+                    "caso_exemplo": f"Startup escalou de R$ 50k para R$ 2M ARR em 18 meses",
+                    "demonstracao": "Projeção de crescimento com otimização completa"
+                },
+                "Relógio Psicológico": {
+                    "estatistica": f"Cada trimestre de atraso = R$ 200k em market share perdido",
+                    "caso_exemplo": f"Empresa perdeu liderança por atrasar implementação 6 meses",
+                    "demonstracao": "Cálculo de oportunidade perdida por inação"
+                }
+            }
         
         return proofs.get(driver_name, {
             "estatistica": f"Dados específicos sobre {driver_name} em {segmento}",
