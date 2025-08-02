@@ -48,36 +48,16 @@ class MentalDriversArchitect:
                     "Médica {nome} reduziu tempo de deslocamento de {tempo_antes} para {tempo_depois} usando teleconsultas",
                     "Cardiologista {nome} aumentou renda em {percentual}% implementando consultas online"
                 ]
-            },
-            'educacao': {
-                'required_terms': ['curso', 'aluno', 'aprender', 'ensino', 'conhecimento', 'certificação'],
-                'context_elements': ['aula', 'material', 'exercício', 'avaliação', 'diploma'],
-                'transformation_indicators': ['aprovação', 'conhecimento adquirido', 'carreira', 'salário'],
-                'story_templates': [
-                    "Aluno {nome} completou curso de {tema} em {tempo} e conseguiu {resultado}",
-                    "Profissional {nome} aumentou salário em {percentual}% após certificação em {area}",
-                    "Estudante {nome} passou de {situacao_antes} para {situacao_depois} com o curso"
-                ]
-            },
-            'tecnologia': {
-                'required_terms': ['sistema', 'software', 'digital', 'automação', 'tecnologia'],
-                'context_elements': ['plataforma', 'aplicativo', 'interface', 'dados', 'processo'],
-                'transformation_indicators': ['eficiência', 'produtividade', 'economia', 'escalabilidade'],
-                'story_templates': [
-                    "Empresa {nome} automatizou {processo} e reduziu custos em {percentual}%",
-                    "Sistema {nome} processou {numero} transações em {tempo}",
-                    "Plataforma {nome} conectou {numero} usuários em {periodo}"
-                ]
             }
         }
     
-    def _generate_contextual_phrases(self, driver_name: str, segmento: str, template: Dict[str, Any]) -> Dict[str, List[str]]:
-        """Gera frases contextuais específicas por segmento"""
+    def _generate_segment_specific_phrases(self, segmento: str, template: Dict[str, Any]) -> Dict[str, List[str]]:
+        """Gera frases específicas por segmento"""
         
         if 'medicina' in template.get('required_terms', []):
             phrases = {
                 "Diagnóstico Brutal": [
-                    f"Resultados medianos em medicina são escolha, não acaso",
+                    f"Médicos medianos em {segmento} são escolha, não acaso",
                     f"Sua performance médica reflete suas ferramentas e métodos",
                     f"Pacientes merecem o melhor de você, não o mais conveniente"
                 ],
@@ -129,7 +109,7 @@ class MentalDriversArchitect:
                 ]
             }
         
-        return phrases.get(driver_name, [f"Frase contextual para {driver_name} em {segmento}"])
+        return phrases
     
     def _validate_story_quality(self, historia: str) -> bool:
         """Valida qualidade da história gerada"""
@@ -535,7 +515,7 @@ class MentalDriversArchitect:
         
         # Detecta tipo de segmento
         segment_type = self._detect_segment_type(segmento, produto)
-        segment_template = self.telemedicine_templates.get(segment_type, self.telemedicine_templates['tecnologia'])
+        segment_template = self._load_segment_templates().get(segment_type, self._load_segment_templates()['tecnologia'])
         
         # Gera customização específica usando templates do segmento
         customization = self._generate_segment_specific_customization(
@@ -779,7 +759,7 @@ class MentalDriversArchitect:
         
         return moments.get(driver_name, "Desenvolvimento - Momento padrão")
     
-    def _generate_anchor_phrases(self, driver_name: str, segmento: str, template: Dict[str, Any] = None) -> List[str]:
+    def _generate_anchor_phrases(self, driver_name: str, segmento: str, template: Dict[str, Any]) -> List[str]:
         """Gera frases de ancoragem específicas"""
         
         phrases = {
